@@ -1,0 +1,26 @@
+{
+  "name": "web-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "backend": "cd backend && npm start",
+    "frontend": "cd frontend && npm start",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AliAamir11/Event-Organization-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AliAamir11/Event-Organization-System/issues"
+  },
+  "homepage": "https://github.com/AliAamir11/Event-Organization-System#readme",
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
