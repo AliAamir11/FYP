@@ -17,7 +17,7 @@ const data = {
   ],
   books: [
     {
-      title: "It Ends With Us",
+      title: "Auditorium",
       author: "Colleen Hoover",
       slugs: "it-ends-with-us",
       category: "novel",
@@ -27,10 +27,10 @@ const data = {
       rating: 0,
       numberOfReviews: 0,
       description:
-        "It Ends with Us is a romance novel by Colleen Hoover, published by Atria Books on August 2, 2016. It is based on the relationship between Hoover's mother and father.",
+        "Book an auditorium with a capacity of 1000 people and has the finest arrangements",
     },
     {
-      title: "The Wedding",
+      title: "Wedding Event",
       author: "Nicholas Sparks",
       slugs: "the-wedding",
       category: "novel",
@@ -40,33 +40,32 @@ const data = {
       rating: 0,
       numberOfReviews: 0,
       description:
-        "The Wedding is a 2003 romantic novel by Nicholas Sparks. It is about a couple who celebrate 30 years' marriage, and has been described as a sequel to Sparks's previous novel The Notebook. ",
+        " Our Premium Venues. At Crestwood, we provide the perfect setting for your wedding, corporate retreat, or private event. We can host events in a variety of ... ",
     },
     {
-      title: "Turtles All the Way Down",
+      title: "Poop Party",
       author: "John Green",
       slugs: "turtles-all-the-way-down",
-      category: "romantic novel",
+      category: "Pool Party",
       image: "/images/b3.jpg",
       price: 9,
       stock: 22,
       rating: 0,
       numberOfReviews: 0,
       description:
-        "Turtles All the Way Down is a young adult novel written by American author John Green. The novel was published on October 10, 2017 by Dutton Books.",
+        "Perfect place to book for if you want a Poop party arranged in the midst of Summer heat",
     },
     {
-      title: "Losing Hope",
+      title: "Farm House",
       author: "Colleen Hoover",
-      slugs: "loosing-hope",
-      category: "novel",
+      slugs: "Farm House",
+      category: "Farm House",
       image: "/images/b4.jpg",
       price: 10,
       stock: 0,
       rating: 0,
       numberOfReviews: 0,
-      description:
-        "spellbound with her novel Hopeless, the story of what happened when a troubled girl named Sky encountered a long-lost childhood friend.",
+      description: "Book a farm house.",
     },
   ],
 };

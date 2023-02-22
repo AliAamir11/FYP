@@ -5,7 +5,7 @@ import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import NavDropDown from "react-bootstrap/NavDropDown";
+import { NavDropDown } from "react-bootstrap";
 import Badge from "react-bootstrap/Badge";
 import Container from "react-bootstrap/Container";
 import { LinkContainer } from "react-router-bootstrap";
