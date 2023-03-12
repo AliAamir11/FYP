@@ -36,6 +36,7 @@ import FavouriteList from "./screens/FavouriteList";
 import { FaBell } from "react-icons/fa";
 import SearchScreen from "./screens/SearchScreen";
 
+
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;

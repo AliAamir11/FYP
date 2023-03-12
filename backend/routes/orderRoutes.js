@@ -157,4 +157,23 @@ orderRouter.delete(
   })
 );
 
+orderRouter.delete(
+  '/:id/mine',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order ) {
+      const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+      if (order.createdAt < twentyFourHoursAgo) {
+        res.status(400).send({ message: 'Booking cannot be deleted after 24 hours' });
+        return;
+      }
+      await order.remove();
+      res.send({ message: 'Booking Deleted' });
+    } else {
+      res.status(404).send({ message: 'Booking Not Found' });
+    }
+  })
+);
+
 export default orderRouter;

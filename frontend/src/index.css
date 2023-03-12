@@ -102,6 +102,17 @@ code {
   color: #a0a0a0;
 }
 
+.fade-out {
+  opacity: 0;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+.homeScreen{
+  margin-top: 2%;
+}
 .card-img-top{
   height: 400px;
 }
@@ -135,4 +146,13 @@ h1{
 .img-large{
   width: 400px;
   height: 400px;
+}
+
+.hoverText{
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  text-decoration: double;
+  font-style: oblique;
+  font-size: "180 rem";
+  padding: '10px'
 }

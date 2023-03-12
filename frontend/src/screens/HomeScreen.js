@@ -7,6 +7,7 @@ import Book from "../components/Book";
 import { Helmet } from "react-helmet-async";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
+import HoverableImage from "../components/HoverableImage";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -46,7 +47,8 @@ function HomeScreen() {
       <Helmet>
         <title>Event Organization System</title>
       </Helmet>
-      <h1>Featured Venues</h1>
+      <HoverableImage/>
+      <h1 className="homeScreen">Featured Venues</h1>
       <div className="books">
         {loading ? (
           <LoadingBox />
