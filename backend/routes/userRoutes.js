@@ -3,6 +3,8 @@ import expressAsyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
 import { generateToken, isAdmin, isAuth } from '../utils.js';
 import User from '../models/userModel.js';
+import Book from '../models/bookModel.js';
+import axios from 'axios';
 
 const userRouter = express.Router();
 
@@ -15,6 +17,8 @@ userRouter.get(
     res.send(users);
   })
 );
+
+
 
 userRouter.get(
   '/:id',
@@ -63,6 +67,88 @@ userRouter.delete(
       res.send({ message: 'User Deleted' });
     } else {
       res.status(404).send({ message: 'User Not Found' });
+    }
+  })
+);
+
+/*
+userRouter.get(
+  '/favorites',
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const user = await User.findById(req.params._id);
+      const books = await Book.find({ _id: { $in: user.favoriteBooks.book } });
+      res.send(books)
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server error');
+    }
+  })
+);
+*/
+
+//api/books/:id
+
+userRouter.get(
+  '/:id/favorites',
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+      const books = await Book.find({ _id: { $in: user.favoriteBooks } });
+      //const books = await Book.find({ _id: { $in: user.favoriteBooks.book } });
+      res.send(books)
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server error');
+    }
+  })
+);
+
+userRouter.post(
+  '/:id/favorites',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+      const book = req.body.item;
+      // console.log(user.favoriteBooks)
+      if (user?.favoriteBooks?.length > 0) {
+        const existingBook = user.favoriteBooks.find((x) => x == book._id);
+        if (existingBook) {
+          return res.status(400).send('Event already exists in favorite books');
+        }
+      }
+        user?.favoriteBooks?.push(book._id);
+        await user?.save();
+        res.send('Event added to favorite books successfully');
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server error');
+    }
+  })
+);
+
+userRouter.put(
+  '/:id/favorites',
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+      const book = req.body.item;
+      console.log("Testing",req)
+      if (user?.favoriteBooks?.length > 0) {
+        const existingBook = user.favoriteBooks.find((x) => x == book._id);
+        if (existingBook) {
+          user.favoriteBooks = user.favoriteBooks.filter((x) => x !== book._id);
+          await user.save();
+          console.log('Event removed from favorite books successfully');
+          res.send('Event removed from favorite books successfully');
+        } else {
+          return res.status(400).send('Event not found in favorite books');
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server error');
     }
   })
 );

@@ -89,7 +89,7 @@ bookRouter.post(
         comment: req.body.comment,
       };
       book.reviews.push(review);
-      book.numberOfReviews = book.reviews.length;
+      book.numberOfReviews = book.reviews.length + 1;
       book.rating =
         book.reviews.reduce((a, c) => c.rating + a, 0) / book.reviews.length;
       const updatedBook = await book.save();

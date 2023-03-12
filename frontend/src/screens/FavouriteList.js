@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useReducer } from "react";
 import { Store } from "../Store";
 import { Helmet } from "react-helmet-async";
 import Row from "react-bootstrap/Row";
@@ -9,16 +9,83 @@ import Button from "react-bootstrap/Button";
 import MessageBox from "../components/MessageBox";
 import { Link, useNavigate } from "react-router-dom";
 import { Table } from "react-bootstrap";
+import logger from "use-reducer-logger";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { getError } from "../utils";
 
-export default function CartScreen() {
-  const navigate = useNavigate();
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_REQUEST":
+      return { ...state, loading: true };
+    case "FETCH_SUCCESS":
+      return { ...state, books: action.payload, loading: false };
+    case "FETCH_FAIL":
+      return { ...state, loading: false, error: action.payload };
+    case 'DELETE_REQUEST':
+      return { ...state, loadingDelete: true, successDelete: false };
+    case 'DELETE_SUCCESS':
+      return {
+        ...state,
+        loadingDelete: false,
+        successDelete: true,
+    };
+    case 'DELETE_FAIL':
+      return { ...state, loadingDelete: false, successDelete: false };
+  
+    case 'DELETE_RESET':
+      return { ...state, loadingDelete: false, successDelete: false };
+    default:
+      return state;
+  }
+};
+
+export default function FavouriteListScreen() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
     favourites: { favouritesItems },
   } = state;
+  const { userInfo } = state;
+  const [{books, loading, error, loadingDelete, successDelete}, dispatch] = useReducer(logger(reducer), {
+    books: [],
+    loading: true,
+    error: "",
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      dispatch({ type: "FETCH_REQUEST" });
+      try {
+        console.log('api call')
+        const result = await axios.get(`/api/users/${userInfo._id}/favorites`);
+        console.log(result.data)
+        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
+      } catch (err) {
+        dispatch({ type: "FETCH_FAIL", payload: err.message });
+        //toast.error(getError(error));
+      }
 
-  const removeItemHandler = (item) => {
-    ctxDispatch({ type: "FAVOURITES_REMOVE_ITEM", payload: item });
+      //setBooks(result.data);
+    };
+    if (successDelete) {
+      dispatch({ type: 'DELETE_RESET' });
+    } else {
+      fetchData();
+    }
+  }, [userInfo, successDelete]);
+
+  const removeItemHandler =async(item) => {
+    //ctxDispatch({ type: "FAVOURITES_REMOVE_ITEM", payload: item });
+    dispatch({ type: 'DELETE_REQUEST' });
+    try {
+      console.log("Showing the Item",item)
+      await axios.put(`/api/users/${userInfo._id}/favorites`, {item});
+      dispatch({ type: 'DELETE_SUCCESS' });
+      toast.success('Event removed from favourites');
+    }
+    catch (err) {
+      dispatch({ type: 'DELETE_FAIL' });
+      toast.error(getError(err));
+    }
   };
   return (
     <div>
@@ -27,7 +94,7 @@ export default function CartScreen() {
       </Helmet>
       <h1>Favourite List</h1>
       <Row>
-        {favouritesItems.length === 0 ? (
+        {books.length === 0 ? (
           <MessageBox>
             Cart is empty. <Link to="/">Go Shopping</Link>
           </MessageBox>
@@ -44,7 +111,7 @@ export default function CartScreen() {
               </tr>
             </thead>
             <tbody>
-              {favouritesItems.map((item) => (
+              {books.map((item) => (
                 <tr key={item._id}>
                   <td className="text-center">
                     <img

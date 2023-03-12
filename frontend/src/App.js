@@ -5,7 +5,7 @@ import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import { NavDropDown } from "react-bootstrap";
+import NavDropDown from "react-bootstrap/NavDropdown";
 import Badge from "react-bootstrap/Badge";
 import Container from "react-bootstrap/Container";
 import { LinkContainer } from "react-router-bootstrap";
@@ -93,7 +93,7 @@ function App() {
                       Cart
                       {cart.cartItems.length > 0 && (
                         <Badge pill bg="danger">
-                          {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                          1
                         </Badge>
                       )}
                     </Link>

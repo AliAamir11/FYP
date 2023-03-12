@@ -12,6 +12,7 @@ import MessageBox from "../components/MessageBox";
 import Button from "react-bootstrap/Button";
 import Book from "../components/Book.js";
 import LinkContainer from "react-router-bootstrap/LinkContainer";
+import { Form, FormCheck, ListGroup } from "react-bootstrap";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -74,7 +75,7 @@ export const ratings = [
 export default function SearchScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
-  const sp = new URLSearchParams(search); // /search?category=Shirts
+  const sp = new URLSearchParams(search); // /search?category=farmhouse
   const category = sp.get("category") || "all";
   const query = sp.get("query") || "all";
   const price = sp.get("price") || "all";
@@ -140,72 +141,72 @@ export default function SearchScreen() {
         <Col md={3}>
           <h3>Department</h3>
           <div>
-            <ul>
-              <li>
-                <Link
-                  className={"all" === category ? "text-bold" : ""}
-                  to={getFilterUrl({ category: "all" })}
-                >
-                  Any
-                </Link>
-              </li>
+                <FormCheck type="checkbox"
+  checked={"all" === category}
+  onChange={(e) =>
+    navigate(
+      getFilterUrl({ category: e.target.checked ? "all" : "" })
+    )
+  }
+  label="Any"/>
+              
               {categories.map((c) => (
-                <li key={c}>
-                  <Link
-                    className={c === category ? "text-bold" : ""}
-                    to={getFilterUrl({ category: c })}
-                  >
-                    {c}
-                  </Link>
-                </li>
+                <item key={c}>
+                <FormCheck type="checkbox"
+                 checked={c === category}
+                 onChange={(e) =>
+                navigate(
+                 getFilterUrl({ category: e.target.checked ? c : "" })
+                )
+                }
+                  label= {c} />
+                </item>
               ))}
-            </ul>
+              
           </div>
           <div>
             <h3>Price</h3>
-            <ul>
-              <li>
-                <Link
-                  className={"all" === price ? "text-bold" : ""}
-                  to={getFilterUrl({ price: "all" })}
-                >
-                  Any
-                </Link>
-              </li>
+            
+              <FormCheck type="checkbox"
+  checked={"all" === price}
+  onChange={(e) =>
+    navigate(
+      getFilterUrl({ price: e.target.checked ? "all" : "" })
+    )
+  }
+  label="Any"/>
+              
               {prices.map((p) => (
-                <li key={p.value}>
-                  <Link
-                    to={getFilterUrl({ price: p.value })}
-                    className={p.value === price ? "text-bold" : ""}
-                  >
-                    {p.name}
-                  </Link>
-                </li>
+                <item key={p.value}>
+                  <FormCheck type="checkbox"
+                 checked={p.value === price}
+                 onChange={(e) =>
+                navigate(
+                 getFilterUrl({ price: e.target.checked ? p.value : "" })
+                )
+                }
+                  label= {p.name} />
+                </item>
               ))}
-            </ul>
           </div>
           <div>
             <h3>Avg. Customer Review</h3>
-            <ul>
               {ratings.map((r) => (
-                <li key={r.name}>
+                <item key={r.name}>
                   <Link
                     to={getFilterUrl({ rating: r.rating })}
                     className={`${r.rating}` === `${rating}` ? "text-bold" : ""}
                   >
                     <Rating caption={" & up"} rating={r.rating}></Rating>
                   </Link>
-                </li>
+                </item>
               ))}
-              <li>
                 <Link
                   to={getFilterUrl({ rating: "all" })}
                   className={rating === "all" ? "text-bold" : ""}
                 >
                   <Rating caption={" & up"} rating={0}></Rating>
                 </Link>
-              </li>
-            </ul>
           </div>
         </Col>
         <Col md={9}>

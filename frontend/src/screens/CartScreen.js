@@ -8,7 +8,6 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import MessageBox from '../components/MessageBox';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 export default function CartScreen() {
   const navigate = useNavigate();
@@ -17,22 +16,17 @@ export default function CartScreen() {
     cart: { cartItems },
   } = state;
 
-  const updateCartHandler = async (item, quantity) => {
-    const { data } = await axios.get(`/api/books/${item._id}`);
-    if (data.stock < quantity) {
-      window.alert('Sorry Book is out of stock');
-      return;
-    }
-    ctxDispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...item, quantity },
-    });
-  };
   const removeItemHandler = (item) => {
     ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
-  const checkoutHandler = () => {
+  const bookingHandler = () => {
     navigate('/signin?redirect=/shipping');
+  };
+  const checkAvailability = () => {
+    //navigate('/signin?redirect=/shipping');
+  };
+  const biddingHandler = () => {
+
   };
   return (
     <div>
@@ -57,37 +51,26 @@ export default function CartScreen() {
                         alt={item.title}
                         className="img-fluid rounded img-thumbnail"
                       ></img>{' '}
-                      <Link to={`/book/${item.slugs}`}>{item.title}</Link>
+                      <Link to={`/book/${item.slugs}`} className="link">{item.title}</Link>
                     </Col>
-                    <Col md={3}>
-                      <Button
-                        onClick={() =>
-                          updateCartHandler(item, item.quantity - 1)
-                        }
-                        variant="light"
-                        disabled={item.quantity === 1}
-                      >
-                        <i className="fas fa-minus-circle"></i>
-                      </Button>{' '}
-                      <span>{item.quantity}</span>{' '}
-                      <Button
-                        variant="light"
-                        onClick={() =>
-                          updateCartHandler(item, item.quantity + 1)
-                        }
-                        disabled={item.quantity === item.stock}
-                      >
-                        <i className="fas fa-plus-circle"></i>
-                      </Button>
-                    </Col>
-                    <Col md={2}>${item.price}</Col>
+                    <Col md={2}>Price: ${item.price}</Col>
                     <Col md={2}>
                       <Button
                         onClick={() => removeItemHandler(item)}
                         variant="light"
+                        className="link"
                       >
                         <i className="fas fa-trash"></i>
                       </Button>
+                    </Col>
+                    <Col md={3}>
+                    <Button
+                      type="button"
+                      variant="primary"
+                      onClick={checkAvailability}
+                    >
+                      Check Availability
+                    </Button>
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -99,22 +82,28 @@ export default function CartScreen() {
           <Card>
             <Card.Body>
               <ListGroup variant="flush">
+              
                 <ListGroup.Item>
-                  <h3>
-                    Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    items): $
-                    {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
-                  </h3>
+                <div className="d-grid">
+                  <Button
+                      type="button"
+                      variant="primary"
+                      onClick={biddingHandler}
+                      disabled={cartItems.length === 0}
+                    >
+                      Proceed to Bidding
+                  </Button>
+                  </div>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <div className="d-grid">
                     <Button
                       type="button"
                       variant="primary"
-                      onClick={checkoutHandler}
+                      onClick={bookingHandler}
                       disabled={cartItems.length === 0}
                     >
-                      Proceed to Checkout
+                      Proceed to Booking
                     </Button>
                   </div>
                 </ListGroup.Item>

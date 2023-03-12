@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema(
       default: false,
       required: true,
     },
+    favoriteBooks: [],
   },
   {
     timestamps: true,

@@ -106,15 +106,21 @@ code {
   height: 400px;
 }
 .mainDiv{
-  background-image: url("6.jpg");
+  
   padding-top: 2%;
-  background-color: gray;
+  background-color: #b7c5d3;
 }
 h1{
   text-align: center;
   padding-bottom: 2%;
 }
 
+.link{
+  margin-left: 5%;
+}
+.fas-fa-star{
+  color: #181715;
+}
 .venueCard{
   background-color: #5c676f63;
 }

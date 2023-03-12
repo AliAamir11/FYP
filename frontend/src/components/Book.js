@@ -3,45 +3,68 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import Rating from "./Rating";
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useReducer } from "react";
 import { Store } from "../Store";
 import { toast } from "react-toastify";
 import { AiOutlinePlus } from "react-icons/ai";
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'ADD_REQUEST':
+      return { ...state, loading: true };
+    case 'ADD_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+      };
+    case 'ADD_FAIL':
+      return { ...state, loading: false };
+    default:
+      return state;
+  }
+};
+
 function Book(props) {
+  const [{loading, error}, dispatch] = useReducer(reducer, {
+    error: '',  loading: true
+  });
   const { book } = props;
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
-    favourites: { favouritesItems },
-  } = state;
-  const {
     cart: { cartItems },
   } = state;
+  const { userInfo } = state;
 
   const addToCartHandler = async (item) => {
     const existItem = cartItems.find((x) => x._id === book._id);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/books/${item._id}`);
-    if (data.stock < quantity) {
-      toast.error("Sorry Book is out of stock");
+    if (existItem) {
+      toast.error("Sorry Event is already in the cart");
       return;
     }
     ctxDispatch({
       type: "CART_ADD_ITEM",
-      payload: { ...item, quantity },
+      payload: { ...item },
     });
   };
   const addToFavouriteHandler = async (item) => {
-    const existItemFav = favouritesItems.find((x) => x._id === book._id);
-    if (existItemFav) {
-      toast.error("Sorry Venue is already in your favourite list.");
-      return;
+    try {
+      dispatch({ type: 'ADD_REQUEST' });
+      const { data } = await axios.post(
+        `/api/users/${userInfo._id}/favorites`,
+        {item},
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      toast.success('Event added to your favourites');
+      dispatch({ type: 'ADD_SUCCESS' });
+    } catch (err) {
+      toast.error(err.response.data);
+      dispatch({
+        type: 'ADD_FAIL',
+      });
     }
-    ctxDispatch({
-      type: "FAVOURITES_ADD_ITEM",
-      payload: { ...item },
-    });
   };
   return (
     <Card className="venueCard">
