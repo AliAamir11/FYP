@@ -47,7 +47,7 @@ function HomeScreen() {
       <Helmet>
         <title>Event Organization System</title>
       </Helmet>
-      <HoverableImage/>
+      <HoverableImage />
       <h1 className="homeScreen">Featured Venues</h1>
       <div className="books">
         {loading ? (

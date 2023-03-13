@@ -6,13 +6,13 @@ import seedRouter from "./routes/seedRoutes.js";
 import bookRouter from "./routes/bookRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
-
+import messageRouter from "./routes/messageRoutes.js";
 dotenv.config();
-mongoose.set('strictQuery', true)
+mongoose.set("strictQuery", true);
 mongoose
-  .connect(process.env.MONGODB_URI,{
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
 
   .then(() => {
@@ -31,6 +31,7 @@ app.use("/api/seed", seedRouter);
 app.use("/api/books", bookRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/messages", messageRouter);
 app.get("/api/keys/paypal", (req, res) => {
   res.send("sb");
 });

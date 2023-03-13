@@ -35,7 +35,7 @@ import UserEditScreen from "./screens/OrderEditScreen";
 import FavouriteList from "./screens/FavouriteList";
 import { FaBell } from "react-icons/fa";
 import SearchScreen from "./screens/SearchScreen";
-
+import MessageUI from "./screens/MessageUI";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
